@@ -113,6 +113,7 @@
       <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -131,6 +132,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,11 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Common\FpsController.cpp" />
+    <ClCompile Include="Src\Common\Quaternion.cpp" />
     <ClCompile Include="Src\Manager\Resource.cpp" />
     <ClCompile Include="Src\Manager\ResourceManager.cpp" />
     <ClCompile Include="Src\Object\Actor\ActorBase.cpp" />
-    <ClCompile Include="Src\Object\Actor\Charactor\CharactorBase.cpp" />
-    <ClCompile Include="Src\Object\Actor\Charactor\Player.cpp" />
     <ClCompile Include="Src\Object\Actor\SkyDome.cpp" />
     <ClCompile Include="Src\Object\Actor\Stage.cpp" />
     <ClCompile Include="Src\Object\Collider\ColliderBase.cpp" />
@@ -154,6 +156,7 @@
     <ClCompile Include="Src\Object\Collider\ColliderModel.cpp" />
     <ClCompile Include="Src\Object\Common\AnimationController.cpp" />
     <ClCompile Include="Src\Object\Common\Transform.cpp" />
+    <ClCompile Include="Src\Object\Grid.cpp" />
     <ClCompile Include="Src\Scene\GameScene.cpp" />
     <ClCompile Include="Src\Application.cpp" />
     <ClCompile Include="Src\Common\Fader.cpp" />
@@ -169,11 +172,11 @@
     <ClCompile Include="Src\Utility\MatrixUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Common\FpsController.h" />
+    <ClInclude Include="Src\Common\Quaternion.h" />
     <ClInclude Include="Src\Manager\Resource.h" />
     <ClInclude Include="Src\Manager\ResourceManager.h" />
     <ClInclude Include="Src\Object\Actor\ActorBase.h" />
-    <ClInclude Include="Src\Object\Actor\Charactor\CharactorBase.h" />
-    <ClInclude Include="Src\Object\Actor\Charactor\Player.h" />
     <ClInclude Include="Src\Object\Actor\SkyDome.h" />
     <ClInclude Include="Src\Object\Actor\Stage.h" />
     <ClInclude Include="Src\Object\Collider\ColliderBase.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="Src\Object\Collider\ColliderModel.h" />
     <ClInclude Include="Src\Object\Common\AnimationController.h" />
     <ClInclude Include="Src\Object\Common\Transform.h" />
+    <ClInclude Include="Src\Object\Grid.h" />
     <ClInclude Include="Src\Scene\GameScene.h" />
     <ClInclude Include="Src\Application.h" />
     <ClInclude Include="Src\Common\Fader.h" />

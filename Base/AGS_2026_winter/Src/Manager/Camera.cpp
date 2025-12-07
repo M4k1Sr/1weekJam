@@ -31,7 +31,7 @@ void Camera::Draw(void)
 
 	//カメラの設定
 	//SetDrawScreenの後、描画処理の前にカメラを設定すること
-	SetCameraPositionAndAngle(cameraPos_, 85  * DX_PI_F / 180.0f, 0.0f, 0.0f);
+	SetCameraPositionAndAngle(cameraPos_, 90  * DX_PI_F / 180.0f, 0.0f, 0.0f);
 
 }
 

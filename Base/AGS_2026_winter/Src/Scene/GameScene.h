@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneBase.h"
+class Camera;
+class Grid;
 
 class GameScene : public SceneBase
 {
@@ -15,6 +17,11 @@ public:
 	void Update(void) override;
 	void Draw(void) override;
 	void Release(void) override;
+
+private:
+
+	Camera* camera_;
+	Grid* grid_;
 
 };
 
