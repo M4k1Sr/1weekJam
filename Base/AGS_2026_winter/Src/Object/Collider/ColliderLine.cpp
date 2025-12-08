@@ -1,4 +1,6 @@
 #include "../Common/Transform.h"
+#include "./ColliderModel.h"
+#include "../../Utility/AsoUtility.h"
 #include "ColliderLine.h"
 
 ColliderLine::ColliderLine(
@@ -43,6 +45,53 @@ VECTOR ColliderLine::GetPosStart(void) const
 VECTOR ColliderLine::GetPosEnd(void) const
 {
 	return GetRotPos(localPosEnd_);
+}
+
+bool ColliderLine::PushBackUp(const ColliderModel* colliderModel, Transform& transform, float pushDistance, bool isExclude, bool isTarget) const
+{
+	bool ret = false;
+
+	// ステージモデル(地面)との衝突
+	auto hits = MV1CollCheck_LineDim(
+		colliderModel->GetFollow()->modelId,
+		-1,
+		GetPosStart(),
+		GetPosEnd());
+
+	for (int i = 0; i < hits.HitNum; i++)
+	{
+
+		auto hit = hits.Dim[i];
+
+		// 除外フレームは無視する
+		if (isExclude && colliderModel->IsExcludeFrame(hit.FrameIndex))
+		{
+			continue;
+		}
+
+
+		// 対象フレーム以外は無視する
+		if (isTarget && !colliderModel->IsTargetFrame(hit.FrameIndex))
+		{
+			continue;
+		}
+
+		// 衝突地点から、少し上に移動
+		if (transform.pos.y < hit.HitPosition.y)
+		{
+			// 衝突物より、下側にいる場合のみ、位置を修正する
+			transform.pos =
+				VAdd(hit.HitPosition, VScale(AsoUtility::DIR_U, 2.0f));
+		}
+
+		// 衝突したことを返す
+		ret = true;
+	}
+
+	// 検出した地面ポリゴン情報の後始末
+	MV1CollResultPolyDimTerminate(hits);
+
+	return ret;
 }
 
 void ColliderLine::DrawDebug(int color)

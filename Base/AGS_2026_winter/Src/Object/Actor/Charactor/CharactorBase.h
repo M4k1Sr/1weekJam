@@ -12,6 +12,8 @@ public:
 	static constexpr float COLLISION_BACK_DIS = 1.0f;
 	//重力
 	static constexpr float GRAVITY_POW = 0.8f;
+	// 最大落下速度
+	static constexpr float MAX_FALL_SPEED = -30.0f;
 
 
 	// 衝突判定種別
@@ -35,16 +37,6 @@ public:
 
 
 protected:
-
-	// 最大落下速度
-	static constexpr float MAX_FALL_SPEED = -30.0f;
-
-	// 衝突時の押し戻し試行回数
-	static constexpr int CNT_TRY_COLLISION = 20;
-
-	// 衝突時の押し戻し量
-	static constexpr float COLLISION_BACK_DIS = 1.0f;
-
 
 	VECTOR moveDir_; //移動方向
 	// ジャンプ量

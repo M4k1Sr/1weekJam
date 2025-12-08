@@ -2,6 +2,7 @@
 #include "../../framework.h"
 #include "ColliderBase.h"
 class Transform;
+class ColliderModel;
 
 class ColliderLine : public ColliderBase
 {
@@ -24,6 +25,15 @@ public:
 	// ワールド座標の取得
 	VECTOR GetPosStart(void) const;
 	VECTOR GetPosEnd(void) const;
+
+	// 衝突したポリゴンの上に押し戻す
+	bool PushBackUp(
+		const ColliderModel* colliderModel,
+		Transform& transform,
+		float pushDistance,
+		bool isExclude = false,
+		bool isTarget = false) const;
+
 
 protected:
 

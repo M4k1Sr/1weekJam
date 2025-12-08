@@ -65,3 +65,23 @@ void ColliderModel::AddTargetFrameIds(const std::string& name)
 	}
 
 }
+
+void ColliderModel::ClearTargetFrame(void)
+{
+	targetFrameIds_.clear();
+}
+
+bool ColliderModel::IsTargetFrame(int frameIdx) const
+{
+	// ‘ÎÛ”»’è
+	if (std::find(
+		targetFrameIds_.begin(),
+		targetFrameIds_.end(),
+		frameIdx) != targetFrameIds_.end())	// end‚Æ‚Í”z—ñ‚Ìˆê”ÔÅŒã‚Ì—v‘f‚ÌŸ
+	{
+		// ‘ÎÛ‚ÉŠY“–‚·‚é
+		return true;
+	}
+
+	return false;
+}
