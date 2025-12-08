@@ -13,8 +13,7 @@ public:
 	{
 		TITLE,
 		PUSH,
-		PIT_FALL_PLANET,
-		SPHERE_PLANET,
+		BarDown,
 		PLAYER,
 		MAIN_STAGE,
 		SKY_DOME,
