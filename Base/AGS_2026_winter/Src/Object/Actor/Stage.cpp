@@ -41,6 +41,13 @@ void Stage::InitCollider(void)
 	// モデルのコライダ
 	ColliderModel* colModel =
 		new ColliderModel(ColliderBase::TAG::STAGE, &transform_);
+
+	// 対象フレーム設定
+	for (const std::string& name : TARGET_FRAME_NAMES)
+	{
+		colModel->AddTargetFrameIds(name);
+	}
+
 	ownColliders_.emplace(static_cast<int>(COLLIDER_TYPE::MODEL), colModel);
 }
 

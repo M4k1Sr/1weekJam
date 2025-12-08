@@ -29,6 +29,10 @@ private:
 	"Mush", "Grass",
 	};
 
+	// 対象フレーム
+	const std::vector<std::string> TARGET_FRAME_NAMES = {
+	"Cylinder",
+	};
 
 	// リソースロード
 	 void InitLoad(void)override;

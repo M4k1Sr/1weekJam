@@ -46,3 +46,22 @@ bool ColliderModel::IsExcludeFrame(int frameIdx) const
 	return false;
 
 }
+
+void ColliderModel::AddTargetFrameIds(const std::string& name)
+{
+	// フレーム数を取得
+	int num = MV1GetFrameNum(follow_->modelId);
+
+	for (int i = 0; i < num; i++)
+	{
+		// フレーム名称を取得
+		std::string frameName = MV1GetFrameName(follow_->modelId, i);
+
+		if (frameName.find(name) != std::string::npos)
+		{
+			// 対象フレームに追加
+			targetFrameIds_.push_back(i);
+		}
+	}
+
+}
