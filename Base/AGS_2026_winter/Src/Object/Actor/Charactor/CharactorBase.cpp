@@ -135,11 +135,6 @@ void CharactorBase::Collision(void)
 
 void CharactorBase::CollisionGravity(void)
 {
-	// —‰º’†‚µ‚©”»’è‚µ‚È‚¢
-	if (!(VDot(AsoUtility::DIR_D, jumpPow_) > 0.9f))
-	{
-		return;
-	}
 
 	// ü•ªƒRƒ‰ƒCƒ_
 	int lineType = static_cast<int>(COLLIDER_TYPE::LINE);
