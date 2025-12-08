@@ -1,48 +1,51 @@
 #pragma once
-#include "../framework.h"
+#include <chrono>
+#include <DxLib.h>
 class SceneBase;
 class Fader;
 class Camera;
-class System;
 
 class SceneManager
 {
 
 public:
 
-	//ステージ
-	static inline STAGE selectedStage_ = STAGE::STAGE1;
-	//プレイモード
-	static inline PLAY_MODE playMode_ = PLAY_MODE::SOLO;
+	// 背景色
+	static constexpr int BACKGROUND_COLOR_R = 0;
+	static constexpr int BACKGROUND_COLOR_G = 139;
+	static constexpr int BACKGROUND_COLOR_B = 139;
+
+	// ディレクショナルライトの方向
+	static constexpr VECTOR LIGHT_DIRECTION = { 0.3f, -0.7f, 0.8f };
 
 	// シーン管理用
 	enum class SCENE_ID
 	{
 		NONE,
 		TITLE,
-		MODESELECT,
-		SOLO,
-		MULTI,
-		MISSION,
-		STAGESELECT,
-		GAME_MENU,
-		GAME,
-		CLEAR,
-		GAMEOVER,
-		RESULT
+		GAME
 	};
-	
+
 	// インスタンスの生成
 	static void CreateInstance(void);
 
 	// インスタンスの取得
 	static SceneManager& GetInstance(void);
 
+	// 初期化
 	void Init(void);
-	void Update(void);
-	void Draw(void);
-	void Release(void);
+
+	// 3Dの初期化
 	void Init3D(void);
+
+	// 更新
+	void Update(void);
+
+	// 描画
+	void Draw(void);
+
+	// リソースの破棄
+	void Destroy(void);
 
 	// 状態遷移
 	void ChangeScene(SCENE_ID nextId);
@@ -53,13 +56,8 @@ public:
 	// デルタタイムの取得
 	float GetDeltaTime(void) const;
 
-	static STAGE GetNextStage(STAGE current);
-
-	float GetTotalTime(void) const;
-
-	System* GetSystem(void) const;
-
-	
+	// カメラの取得
+	Camera* GetCamera(void) const;
 
 private:
 
@@ -72,14 +70,11 @@ private:
 	// フェード
 	Fader* fader_;
 
-	//カメラ
-	Camera* camera_;
-
 	// 各種シーン
 	SceneBase* scene_;
 
-	//タイマー
-	System* system_;
+	// カメラ
+	Camera* camera_;
 
 	// シーン遷移中判定
 	bool isSceneChanging_;
@@ -87,14 +82,16 @@ private:
 	// デルタタイム
 	std::chrono::system_clock::time_point preTime_;
 	float deltaTime_;
-	
+
 	// デフォルトコンストラクタをprivateにして、
 	// 外部から生成できない様にする
 	SceneManager(void);
+
 	// コピーコンストラクタも同様
-	SceneManager(const SceneManager&);
+	SceneManager(const SceneManager& instance) = default;
+
 	// デストラクタも同様
-	~SceneManager(void);
+	~SceneManager(void) = default;
 
 	// デルタタイムをリセットする
 	void ResetDeltaTime(void);
@@ -104,11 +101,5 @@ private:
 
 	// フェード
 	void Fade(void);
-
-	bool isLoading_ = false;        // ローディング状態か
-	float loadingTime_ = 0.0f;      // ローディング経過時間
-	constexpr static float LOADING_WAIT = 1.0f;  // ローディング演出時間
-
-	
 
 };
