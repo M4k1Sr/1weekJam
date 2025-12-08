@@ -6,6 +6,8 @@
 #include "../Manager/SceneManager.h"
 #include "../Object/Actor/Charactor/CharactorBase.h"
 #include "../Object/Actor/Charactor/Player.h"
+#include "../Object/Actor/Bar.h"
+#include "../Object/Actor/BarUp.h"
 
 GameScene::GameScene(void)
 {
@@ -23,6 +25,10 @@ void GameScene::Init(void)
 	stage_->Init();
 	player_ = new Player();
 	player_->Init();
+	bar_ = new Bar();
+	bar_->Init();
+	barUp_ = new BarUp();
+	barUp_->Init();
 	sceMng_.GetCamera()->ChangeMode(Camera::MODE::FOLLOW);
 	sceMng_.GetCamera()->SetFollow(&player_->GetTransform());
 }
@@ -30,6 +36,8 @@ void GameScene::Init(void)
 void GameScene::Update(void)
 {
 	player_->Update();
+	bar_->Update();
+	barUp_->Update();
 }
 
 void GameScene::Draw(void)
@@ -37,6 +45,8 @@ void GameScene::Draw(void)
 	grid_->Draw();
 	stage_->Draw();
 	player_->Draw();
+	bar_->Draw();
+	barUp_->Draw();
 }
 
 void GameScene::Release(void)
