@@ -91,7 +91,6 @@ void CharactorBase::CollisionCapsule(void)
 	}
 }
 
-
 void CharactorBase::DelayRotate(void)
 {
 	// ˆÚ“®•ûŒü‚©‚ç‰ñ“]‚É•ÏŠ·‚·‚é
