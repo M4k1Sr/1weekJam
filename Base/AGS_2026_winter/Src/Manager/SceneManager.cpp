@@ -3,6 +3,8 @@
 #include "../Common/System.h"
 #include "../Scene/SceneBase.h"
 #include "../Scene/GameScene.h"
+#include "../Scene/TitleScene.h"
+
 
 SceneManager* SceneManager::instance_ = nullptr;
 
@@ -43,7 +45,7 @@ void SceneManager::Init(void)
 	preTime_ = std::chrono::system_clock::now();
 
 	// èâä˙ÉVÅ[ÉìÇÃê›íË
-	DoChangeScene(SCENE_ID::GAME);
+	DoChangeScene(SCENE_ID::TITLE);
 
 }
 
@@ -210,6 +212,9 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 
 	switch (sceneId_)
 	{
+	case SCENE_ID::TITLE:
+		scene_ = new TitleScene();
+		break;
 	case SCENE_ID::GAME:
 		scene_ = new GameScene();
 		break;
