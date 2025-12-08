@@ -33,7 +33,7 @@ void ResourceManager::Init(void)
 
 	res = new Resource(RES_T::MODEL, PATH_MDL + "Stage/stage.mv1");
 	resourcesMap_.emplace(SRC::MAIN_STAGE, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "Player/Player.mv1");
+	res = new Resource(RES_T::MODEL, PATH_MDL + "Player/Jaz/jaz1.mv1");
 	resourcesMap_.emplace(SRC::PLAYER, res);
 	res = new Resource(RES_T::MODEL, PATH_MDL + "Stage/Bar.mv1");
 	resourcesMap_.emplace(SRC::BarDown, res);

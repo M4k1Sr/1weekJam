@@ -29,7 +29,8 @@ void Player::InitLoad(void)
 
 void Player::InitTransform(void)
 {
-	transform_.scl = { 1.0f,1.0f,1.0f };
+	static float SIZE = 2.5f;
+	transform_.scl = { SIZE,SIZE,SIZE };
 	transform_.quaRot = Quaternion::Identity();
 	transform_.quaRotLocal = Quaternion::Mult(transform_.quaRot,
 		Quaternion::Euler(0, AsoUtility::Deg2RadF(180), 0));
@@ -58,10 +59,10 @@ void Player::InitCollider(void)
 void Player::InitAnimation(void)
 {
 	anim_ = new AnimationController(transform_.modelId);
-	anim_->Add((int)STATE::IDLE, 30.0f, "Data/Model/Player/Idle.mv1");
-	anim_->Add((int)STATE::RUN, 30.0f, "Data/Model/Player/Run.mv1");
-	anim_->Add((int)STATE::FAST_RUN, 30.0f, "Data/Model/Player/FastRun.mv1");
-	anim_->Add((int)STATE::JUMP, 60.0f, "Data/Model/Player/JumpRising.mv1");
+	anim_->Add((int)STATE::IDLE, 30.0f, "Data/Model/Player/Jaz/JazIdle.mv1");
+	anim_->Add((int)STATE::RUN, 30.0f, "Data/Model/Player/Jaz/jazWalk.mv1");
+	anim_->Add((int)STATE::FAST_RUN, 30.0f, "Data/Model/Player/Jaz/FastRun.mv1");
+	anim_->Add((int)STATE::JUMP, 60.0f, "Data/Model/Player/Jaz/JumpRising.mv1");
 
 
 	anim_->Play((int)STATE::IDLE);
