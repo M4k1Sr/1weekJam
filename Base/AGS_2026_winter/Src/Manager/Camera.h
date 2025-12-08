@@ -9,11 +9,11 @@ class Camera
 public:
 
 	// カメラの初期座標
-	static constexpr VECTOR DERFAULT_POS = { 0.0f, 6000.0f, -500.0f };
+	static constexpr VECTOR DERFAULT_POS = { 0.0f, 200.0f, -500.0f };
 
 	// カメラの初期角度
 	static constexpr VECTOR DERFAULT_ANGLES = {
-		0.0f, 90.0f, 0.0f
+		0.0f, 00.0f, 0.0f
 	};
 
 	// カメラの回転量

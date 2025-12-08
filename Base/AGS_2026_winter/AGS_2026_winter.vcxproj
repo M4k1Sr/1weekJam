@@ -148,6 +148,8 @@
     <ClCompile Include="Src\Manager\Resource.cpp" />
     <ClCompile Include="Src\Manager\ResourceManager.cpp" />
     <ClCompile Include="Src\Object\Actor\ActorBase.cpp" />
+    <ClCompile Include="Src\Object\Actor\Charactor\CharactorBase.cpp" />
+    <ClCompile Include="Src\Object\Actor\Charactor\Player.cpp" />
     <ClCompile Include="Src\Object\Actor\SkyDome.cpp" />
     <ClCompile Include="Src\Object\Actor\Stage.cpp" />
     <ClCompile Include="Src\Object\Collider\ColliderBase.cpp" />
@@ -177,6 +179,8 @@
     <ClInclude Include="Src\Manager\Resource.h" />
     <ClInclude Include="Src\Manager\ResourceManager.h" />
     <ClInclude Include="Src\Object\Actor\ActorBase.h" />
+    <ClInclude Include="Src\Object\Actor\Charactor\CharactorBase.h" />
+    <ClInclude Include="Src\Object\Actor\Charactor\Player.h" />
     <ClInclude Include="Src\Object\Actor\SkyDome.h" />
     <ClInclude Include="Src\Object\Actor\Stage.h" />
     <ClInclude Include="Src\Object\Collider\ColliderBase.h" />
