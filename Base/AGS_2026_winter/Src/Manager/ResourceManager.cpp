@@ -31,22 +31,8 @@ void ResourceManager::Init(void)
 
 	Resource* res;
 
-	res = new Resource(RES_T::IMG, PATH_IMG + "Title.png");
-	resourcesMap_.emplace(SRC::TITLE, res);
-	res = new Resource(RES_T::IMG, PATH_IMG + "PushSpace.png");
-	resourcesMap_.emplace(SRC::PUSH, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "Stage/PitfallPlanet/PitfallPlanet.mv1");
-	resourcesMap_.emplace(SRC::PIT_FALL_PLANET, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "Stage/SpherePlanet/SpherePlanet.mv1");
-	resourcesMap_.emplace(SRC::SPHERE_PLANET, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "Player/Player.mv1");
-	resourcesMap_.emplace(SRC::PLAYER, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "Stage/MainStage/MainStage.mv1");
+	res = new Resource(RES_T::MODEL, PATH_MDL + "Stage/stage.mv1");
 	resourcesMap_.emplace(SRC::MAIN_STAGE, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "SkyDome/SkyDome.mv1");
-	resourcesMap_.emplace(SRC::SKY_DOME, res);
-	res = new Resource(RES_T::MODEL, PATH_MDL + "Player/Player.mv1");
-	resourcesMap_.emplace(SRC::PLAYER, res);
 
 
 }

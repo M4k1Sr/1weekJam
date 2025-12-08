@@ -1,156 +1,349 @@
+#include <DxLib.h>
+#include <EffekseerForDXLib.h>
+#include "../Utility/AsoUtility.h"
+#include "../Manager/InputManager.h"
+#include "../Object/Common/Transform.h"
 #include "Camera.h"
-#include "../Application.h"
 
-Camera::Camera()
+Camera::Camera(void)
+	:
+	followTransform_(nullptr),
+	mode_(MODE::NONE),
+	pos_(AsoUtility::VECTOR_ZERO),
+	angles_(AsoUtility::VECTOR_ZERO),
+	rot_(Quaternion::Identity()),
+	rotY_(Quaternion::Identity()),
+	targetPos_(AsoUtility::VECTOR_ZERO),
+	cameraUp_(AsoUtility::DIR_U)
 {
-
-	cameraPos_ = { 0,0,0 };
-
+	// DxLibの初期設定では、
+	// カメラの位置が x = 320.0f, y = 240.0f, z = (画面のサイズによって変化)、
+	// 注視点の位置は x = 320.0f, y = 240.0f, z = 1.0f
+	// カメラの上方向は x = 0.0f, y = 1.0f, z = 0.0f
+	// 右上位置からZ軸のプラス方向を見るようなカメラ
 }
 
-Camera::~Camera()
+Camera::~Camera(void)
 {
 }
 
 void Camera::Init(void)
 {
-	cameraPos_ = INIT_CAMERA_POS;				//カメラ位置
+
+	ChangeMode(MODE::FIXED_POINT);
 
 }
 
-void Camera::Update()
+void Camera::Update(void)
+{
+}
+
+void Camera::SetBeforeDraw(void)
 {
 
-	//cameraPos_.z = player_->GetPos().z;		//カメラのプレイヤー追尾
-	SetAngle();
+	// クリップ距離を設定する(SetDrawScreenでリセットされる)
+	SetCameraNearFar(VIEW_NEAR, VIEW_FAR);
+
+	switch (mode_)
+	{
+	case Camera::MODE::FIXED_POINT:
+		SetBeforeDrawFixedPoint();
+		break;
+	case Camera::MODE::FREE:
+		SetBeforeDrawFree();
+		break;
+	case Camera::MODE::FOLLOW:
+		SetBeforeDrawFollow();
+		break;
+	}
+
+	// カメラの設定(位置と注視点による制御)
+	SetCameraPositionAndTargetAndUpVec(
+		pos_,
+		targetPos_,
+		cameraUp_
+	);
+
+	// DXライブラリのカメラとEffekseerのカメラを同期する。
+	Effekseer_Sync3DSetting();
 
 }
 
-void Camera::Draw(void)
+void Camera::DrawDebug(void)
 {
-
-	//カメラの設定
-	//SetDrawScreenの後、描画処理の前にカメラを設定すること
-	SetCameraPositionAndAngle(cameraPos_, 90  * DX_PI_F / 180.0f, 0.0f, 0.0f);
-
 }
 
 void Camera::Release(void)
 {
 }
 
-VECTOR Camera::GetCameraPos(void)
+void Camera::SetFollow(const Transform* follow)
 {
-	return cameraPos_;
+	followTransform_ = follow;
 }
 
-//VECTOR Camera::Rei(float y)
-//{
-//
-//
-//	//// マウス位置を取得
-//	//Vector2 pos = mouse_->GetMousePos();
-//
-//	//// 画面座標 → 正規化
-//	//float ndcX = (2.0f * pos.x / Application::SCREEN_SIZE_X) - 1.0f;
-//	//float ndcY = 1.0f - (2.0f * pos.y / Application::SCREEN_SIZE_Y);
-//
-//	//// FOVとアスペクト
-//	//float fov = DX_PI_F / 4.0f;
-//	//float aspect = Application::SCREEN_SIZE_X / Application::SCREEN_SIZE_Y;
-//
-//	//// スクリーン上のレイ
-//	//float nearZ = 1.0f;
-//	//float nearX = tanf(fov / 2.0f) * aspect * ndcX * nearZ;
-//	//float nearY = tanf(fov / 2.0f) * ndcY * nearZ;
-//
-//	//// カメラ座標系
-//	//VECTOR camForward = VGet(0, -1, 0);  // 真下向き
-//	//VECTOR camRight = VGet(1, 0, 0);
-//	//VECTOR camUp = VGet(0, 0, 1);
-//
-//	//// レイ方向
-//	//VECTOR rayDir = VNorm(VAdd(VAdd(VScale(camRight, nearX), VScale(camUp, nearY)), camForward));
-//
-//
-//
-//	//// 指定されたY座標で交差する点を計算
-//	//float t = (y - cameraPos_.y) / rayDir.y;
-//	//VECTOR hitPos = VAdd(cameraPos_, VScale(rayDir, t));
-//
-//	//return hitPos;
-//
-//	
-//
-//}
+const VECTOR& Camera::GetPos(void) const
+{
+	return pos_;
+}
 
-void Camera::SetAngle(void)
+const VECTOR& Camera::GetAngles(void) const
+{
+	return angles_;
+}
+
+const VECTOR& Camera::GetTargetPos(void) const
+{
+	return targetPos_;
+}
+
+const Quaternion& Camera::GetQuaRot(void) const
+{
+	return rot_;
+}
+
+const Quaternion& Camera::GetQuaRotY(void) const
+{
+	return rotY_;
+}
+
+VECTOR Camera::GetForward(void) const
+{
+	return VNorm(VSub(targetPos_, pos_));
+}
+
+void Camera::ChangeMode(MODE mode)
 {
 
-	// プレイヤー位置
-	/*VECTOR playerPos = player_->GetPos();
+	// カメラの初期設定
+	SetDefault();
 
-	VECTOR hitPos = Rei(playerPos.y);*/
+	// カメラモードの変更
+	mode_ = mode;
 
-	//// XZ平面だけでベクトルを作る
-	//float dx = hitPos.x - playerPos.x;
-	//float dz = hitPos.z - playerPos.z;
-
-	//// 角度計算
-	//float targetAngleY = atan2f(-dx, -dz);
-
-	//// なめらか補間
-	//float currentAngleY = player_->GetPlayerAngle();
-	//float diff = targetAngleY - currentAngleY;
-
-	//if (diff > DX_PI_F) diff -= DX_PI_F * 2.0f;
-	//if (diff < -DX_PI_F) diff += DX_PI_F * 2.0f;
-
-	//float smoothSpeed = 0.1f;
-	//currentAngleY += diff * smoothSpeed;
-
-	//VECTOR toTarget = VSub(hitPos, playerPos);
-	//toTarget.y = 0;  // XZ平面に制限
-	//VECTOR faceDir = VNorm(toTarget);
-	//float angle = atan2f(-faceDir.x, -faceDir.z);
-
-	//// プレイヤーにセット
-	//player_->SetPlayerAngle(angle);
+	// 変更時の初期化処理
+	switch (mode_)
+	{
+	case Camera::MODE::FIXED_POINT:
+		break;
+	case Camera::MODE::FREE:
+		break;
+	case Camera::MODE::FOLLOW:
+		break;
+	}
 
 }
 
-//MATRIX Camera::GetCameraRotationMatrix()
-//{
-//	//MATRIX rotationMatrix;
-//	//float angleY = player_->GetPlayerAngle();  // プレイヤーのY軸回転角度を取得
-//
-//	//// Y軸回転行列を手動で計算
-//	//rotationMatrix.m[0][0] = cosf(angleY);  // cos(θ)
-//	//rotationMatrix.m[0][1] = 0.0f;
-//	//rotationMatrix.m[0][2] = sinf(angleY);  // sin(θ)
-//	//rotationMatrix.m[0][3] = 0.0f;
-//
-//	//rotationMatrix.m[1][0] = 0.0f;
-//	//rotationMatrix.m[1][1] = 1.0f;
-//	//rotationMatrix.m[1][2] = 0.0f;
-//	//rotationMatrix.m[1][3] = 0.0f;
-//
-//	//rotationMatrix.m[2][0] = -sinf(angleY);  // -sin(θ)
-//	//rotationMatrix.m[2][1] = 0.0f;
-//	//rotationMatrix.m[2][2] = cosf(angleY);   // cos(θ)
-//	//rotationMatrix.m[2][3] = 0.0f;
-//
-//	//rotationMatrix.m[3][0] = 0.0f;
-//	//rotationMatrix.m[3][1] = 0.0f;
-//	//rotationMatrix.m[3][2] = 0.0f;
-//	//rotationMatrix.m[3][3] = 1.0f;
-//
-//	//// レイの方向を回転行列で変換
-//	//VECTOR rayDir = VGet(0, -1, 0);  // 初期のレイ方向
-//	//rayDir = VTransform(rayDir, rotationMatrix);  // 回転行列をレイの方向に適用
-//
-//
-//}
+void Camera::SetDefault(void)
+{
 
+	// カメラの初期設定
+	pos_ = DERFAULT_POS;
 
+	// カメラ角
+	angles_ = DERFAULT_ANGLES;
+	rot_ = Quaternion::Identity();
 
+	// 注視点
+	targetPos_ = AsoUtility::VECTOR_ZERO;
+
+	// カメラの上方向
+	cameraUp_ = rot_.GetUp();
+
+}
+
+void Camera::SyncFollow(void)
+{
+
+	// 同期先の位置
+	VECTOR pos = followTransform_->pos;
+
+	// Y軸
+	rotY_ = Quaternion::AngleAxis(angles_.y, AsoUtility::AXIS_Y);
+
+	// Y軸 + X軸
+	rot_ = rotY_.Mult(Quaternion::AngleAxis(angles_.x, AsoUtility::AXIS_X));
+
+	VECTOR localPos;
+
+	// 注視点
+	localPos = rot_.PosAxis(FOLLOW_TARGET_LOCAL_POS);
+	targetPos_ = VAdd(pos, localPos);
+
+	// カメラ位置
+	localPos = rot_.PosAxis(FOLLOW_CAMERA_LOCAL_POS);
+	pos_ = VAdd(pos, localPos);
+
+	// カメラの上方向
+	cameraUp_ = rot_.GetUp();
+
+}
+
+void Camera::ProcessRot(bool isLimit)
+{
+
+	if (GetJoypadNum() == 0)
+	{
+		// 方向回転によるXYZの移動(キーボード)
+		RotKeyboard(isLimit);
+	}
+	else
+	{
+		// 方向回転によるXYZの移動(ゲームパッド)
+		RotGamePad(isLimit);
+	}
+
+}
+
+void Camera::ProcessMove(void)
+{
+
+	auto& ins = InputManager::GetInstance();
+
+	VECTOR moveDir = AsoUtility::VECTOR_ZERO;
+
+	if (GetJoypadNum() == 0)
+	{
+		if (ins.IsNew(KEY_INPUT_W)) { moveDir = AsoUtility::DIR_F; }
+		if (ins.IsNew(KEY_INPUT_S)) { moveDir = AsoUtility::DIR_B; }
+		if (ins.IsNew(KEY_INPUT_A)) { moveDir = AsoUtility::DIR_L; }
+		if (ins.IsNew(KEY_INPUT_D)) { moveDir = AsoUtility::DIR_R; }
+	}
+	else
+	{
+
+		InputManager::JOYPAD_IN_STATE padState =
+			ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
+
+		// 左スティックの傾き
+		moveDir = ins.GetDirectionXZAKey(padState.AKeyLX, padState.AKeyLY);
+
+	}
+
+	// 移動処理
+	if (!AsoUtility::EqualsVZero(moveDir))
+	{
+
+		// 移動させたい方向(ベクトル)に変換
+
+		// 現在の向きからの進行方向を取得
+		VECTOR direction = VNorm(rot_.PosAxis(moveDir));
+
+		// 移動させたい方向に移動量をかける(=移動量)
+		VECTOR movePow = VScale(direction, SPEED);
+
+		// カメラ位置も注視点も移動させる
+		pos_ = VAdd(pos_, movePow);
+		targetPos_ = VAdd(targetPos_, movePow);
+
+	}
+
+}
+
+void Camera::SetBeforeDrawFixedPoint(void)
+{
+	// 何もしない
+}
+
+void Camera::SetBeforeDrawFree(void)
+{
+
+	// カメラ操作(回転)
+	ProcessRot(false);
+
+	// カメラ操作(移動)
+	ProcessMove();
+
+	// Y軸
+	rotY_ = Quaternion::AngleAxis(angles_.y, AsoUtility::AXIS_Y);
+
+	// Y軸 + X軸
+	rot_ = rotY_.Mult(Quaternion::AngleAxis(angles_.x, AsoUtility::AXIS_X));
+
+	// 注視点更新
+	targetPos_ = VAdd(pos_, rot_.PosAxis(FOLLOW_TARGET_LOCAL_POS));
+
+	// カメラの上方向更新
+	cameraUp_ = rot_.GetUp();
+
+}
+
+void Camera::SetBeforeDrawFollow(void)
+{
+
+	// カメラ操作(回転)
+	ProcessRot(true);
+
+	// 追従対象との相対位置を同期
+//	SyncFollow();
+
+}
+
+void Camera::RotKeyboard(bool isLimit)
+{
+
+	const auto& ins = InputManager::GetInstance();
+
+	// カメラ回転
+	if (ins.IsNew(KEY_INPUT_RIGHT))
+	{
+		// 右回転
+		angles_.y += ROT_POW_RAD;
+	}
+	if (ins.IsNew(KEY_INPUT_LEFT))
+	{
+		// 左回転
+		angles_.y -= ROT_POW_RAD;
+	}
+
+	// 上回転
+	if (ins.IsNew(KEY_INPUT_UP))
+	{
+		angles_.x += ROT_POW_RAD;
+		if (isLimit && angles_.x > LIMIT_X_UP_RAD)
+		{
+			angles_.x = LIMIT_X_UP_RAD;
+		}
+	}
+
+	// 下回転
+	if (ins.IsNew(KEY_INPUT_DOWN))
+	{
+		angles_.x -= ROT_POW_RAD;
+		if (isLimit && angles_.x < -LIMIT_X_DW_RAD)
+		{
+			angles_.x = -LIMIT_X_DW_RAD;
+		}
+	}
+
+}
+
+void Camera::RotGamePad(bool isLimit)
+{
+
+	auto& ins = InputManager::GetInstance();
+
+	// 接続されているゲームパッド１の情報を取得
+	InputManager::JOYPAD_IN_STATE padState =
+		ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
+
+	// 右スティックの傾き
+	VECTOR dir = ins.GetDirectionXZAKey(padState.AKeyRX, padState.AKeyRY);
+
+	// 右スティック左右の傾き
+	angles_.y += dir.x * ROT_POW_RAD;
+
+	// 右スティック上下の傾き
+	angles_.x += dir.z * ROT_POW_RAD;
+
+	// 角度制限
+	if (isLimit && angles_.x < -LIMIT_X_DW_RAD)
+	{
+		angles_.x = -LIMIT_X_DW_RAD;
+	}
+	if (isLimit && angles_.x > LIMIT_X_UP_RAD)
+	{
+		angles_.x = LIMIT_X_UP_RAD;
+	}
+
+}
