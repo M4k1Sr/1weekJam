@@ -27,6 +27,16 @@ void ColliderModel::AddExcludeFrameIds(const std::string& name)
 	}
 }
 
+void ColliderModel::Update()
+{
+	// Transform のワールド行列をモデルに反映
+	MV1SetMatrix(follow_->modelId, follow_->GetWorldMatrix());
+
+	// モデルの衝突情報を最新の状態に更新
+	MV1RefreshCollInfo(follow_->modelId);
+}
+
+
 void ColliderModel::ClearExcludeFrame(void)
 {
 	excludeFrameIds_.clear();

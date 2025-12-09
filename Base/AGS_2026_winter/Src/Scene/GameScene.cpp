@@ -29,6 +29,17 @@ void GameScene::Init(void)
 	bar_->Init();
 	barUp_ = new BarUp();
 	barUp_->Init();
+	// ステージモデルのコライダーをプレイヤーに登録
+	const ColliderBase* stageCollider =
+		stage_->GetOwnCollider(static_cast<int>(Stage::COLLIDER_TYPE::MODEL));
+	const ColliderBase* barCollider =
+		bar_->GetOwnCollider(static_cast<int>(Bar::COLLIDER_TYPE::MODEL));
+	const ColliderBase* barUpCollider =
+		barUp_->GetOwnCollider(static_cast<int>(BarUp::COLLIDER_TYPE::MODEL));
+	player_->AddHitCollider(stageCollider);
+	player_->AddHitCollider(barCollider);
+	player_->AddHitCollider(barUpCollider);
+
 	sceMng_.GetCamera()->ChangeMode(Camera::MODE::FOLLOW);
 	sceMng_.GetCamera()->SetFollow(&player_->GetTransform());
 }

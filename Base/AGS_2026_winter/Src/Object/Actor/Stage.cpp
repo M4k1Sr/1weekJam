@@ -36,13 +36,14 @@ void Stage::InitTransform(void)
 
 void Stage::InitCollider(void)
 {
-	transform_.Update();
-	// DxLib側の衝突情報セットアップ
-	MV1SetupCollInfo(transform_.modelId);
+
 	// モデルのコライダ
 	ColliderModel* colModel =
 		new ColliderModel(ColliderBase::TAG::STAGE, &transform_);
 	ownColliders_.emplace(static_cast<int>(COLLIDER_TYPE::MODEL), colModel);
+	// DxLib側の衝突情報セットアップ
+	MV1SetupCollInfo(transform_.modelId);
+	transform_.Update();
 }
 
 void Stage::InitAnimation(void)

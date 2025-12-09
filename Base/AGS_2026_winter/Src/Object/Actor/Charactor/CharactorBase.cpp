@@ -27,7 +27,7 @@ void CharactorBase::Update(void)
 	// 移動方向に応じた遅延回転
 	DelayRotate();
 	// 重力による移動量
-	//CalcGravityPow();
+	CalcGravityPow();
 	// 衝突判定前準備
 	CollisionReserve();
 	// 衝突判定
@@ -69,9 +69,6 @@ void CharactorBase::CollisionCapsule(void)
 		{
 			auto hit = hits.Dim[i];
 
-			// 除外フレームは無視する
-			//〇〇〇
-
 			for (int tryCnt = 0; tryCnt < CNT_TRY_COLLISION; tryCnt++)
 			{
 				int pHit = HitCheck_Capsule_Triangle(
@@ -81,10 +78,22 @@ void CharactorBase::CollisionCapsule(void)
 
 				if (pHit)
 				{
-					transform_.pos =
-						VAdd(transform_.pos,
-							VScale(hit.Normal, COLLISION_BACK_DIS));
+					// 衝突法線に Y を足して斜め上方向に
+					VECTOR pushDir = hit.Normal;
+					pushDir.y += 1.0f;   // 1.0 くらいで十分
+					pushDir = VNorm(pushDir);
+
+					// 位置の押し戻しは少しだけ
+					transform_.pos = VAdd(transform_.pos,
+						VScale(pushDir, COLLISION_BACK_DIS * 2.0f));
+
+					// 速度に吹っ飛びを加える
+					const float PUSH_FORCE = 150.0f; // 大きすぎない
+					velocity_ = VAdd(velocity_, VScale(pushDir, PUSH_FORCE));
+
+
 					continue;
+
 				}
 				break;
 			}
@@ -130,56 +139,56 @@ void CharactorBase::Collision(void)
 
 void CharactorBase::CollisionGravity(void)
 {
-	//// 線分コライダ
-	//int lineType = static_cast<int>(COLLIDER_TYPE::LINE);
+	// 線分コライダ
+	int lineType = static_cast<int>(COLLIDER_TYPE::LINE);
 
-	//// 線分コライダが無ければ処理を抜ける
-	//if (ownColliders_.count(lineType) == 0) return;
+	// 線分コライダが無ければ処理を抜ける
+	if (ownColliders_.count(lineType) == 0) return;
 
-	//// 線分コライダ情報
-	//ColliderLine* colliderLine_ =
-	//	dynamic_cast<ColliderLine*>(ownColliders_.at(lineType).get());
+	// 線分コライダ情報
+	ColliderLine* colliderLine_ =
+		dynamic_cast<ColliderLine*>(ownColliders_.at(lineType).get());
 
 
-	//if (colliderLine_ == nullptr) return;
-	//
-	//// 線分の始点と終点を取得
-	//VECTOR s = colliderLine_->GetPosStart();
-	//VECTOR e = colliderLine_->GetPosEnd();
+	if (colliderLine_ == nullptr) return;
+	
+	// 線分の始点と終点を取得
+	VECTOR s = colliderLine_->GetPosStart();
+	VECTOR e = colliderLine_->GetPosEnd();
 
-	//// 登録されている衝突物を全てチェック
-	//for (const auto& hitCol : hitColliders_)
-	//{
-	//	// ステージ以外は処理を飛ばす
-	//	if (hitCol->GetTag() != ColliderBase::TAG::STAGE) continue;
+	// 登録されている衝突物を全てチェック
+	for (const auto& hitCol : hitColliders_)
+	{
+		// ステージ以外は処理を飛ばす
+		if (hitCol->GetTag() != ColliderBase::TAG::STAGE) continue;
 
-	//	// 派生クラスへキャスト
-	//	const ColliderModel* colliderModel =
-	//		dynamic_cast<const ColliderModel*>(hitCol);
+		// 派生クラスへキャスト
+		const ColliderModel* colliderModel =
+			dynamic_cast<const ColliderModel*>(hitCol);
 
-	//	if (colliderModel == nullptr) continue;
+		if (colliderModel == nullptr) continue;
 
-	//	// ステージモデル(地面)との衝突
-	//	auto hit = MV1CollCheck_Line(
-	//		colliderModel->GetFollow()->modelId, -1, s, e);
+		// ステージモデル(地面)との衝突
+		auto hit = MV1CollCheck_Line(
+			colliderModel->GetFollow()->modelId, -1, s, e);
 
-	//	//除外フレームに追加
-	//	
+		//除外フレームに追加
+		
 
-	//	if (hit.HitFlag > 0)
-	//	{
-	//		// 衝突地点から、少し上に移動
-	//		transform_.pos =
-	//			VAdd(hit.HitPosition, VScale(AsoUtility::DIR_U, 2.0f));
-	//		// ジャンプリセット
-	//		jumpPow_ = AsoUtility::VECTOR_ZERO;
+		if (hit.HitFlag > 0)
+		{
+			// 衝突地点から、少し上に移動
+			transform_.pos =
+				VAdd(hit.HitPosition, VScale(AsoUtility::DIR_U, 2.0f));
+			// ジャンプリセット
+			jumpPow_ = AsoUtility::VECTOR_ZERO;
 
-	//		//ジャンプの入力受付時間をリセット
-	//		stepJump_ = 0.0f;
+			//ジャンプの入力受付時間をリセット
+			stepJump_ = 0.0f;
 
-	//		// ジャンプ判定
-	//		isJump_ = false;
-	//	}
-	//}
+			// ジャンプ判定
+			isJump_ = false;
+		}
+	}
 }
 

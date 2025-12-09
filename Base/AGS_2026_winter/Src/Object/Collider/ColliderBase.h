@@ -27,6 +27,7 @@ public:
 	ColliderBase(SHAPE shape, TAG tag, const Transform* follow);
 	// デストラクタ
 	virtual ~ColliderBase(void);
+	virtual void Update() {};
 	// 描画
 	void Draw(void);
 	// 追従先の取得
