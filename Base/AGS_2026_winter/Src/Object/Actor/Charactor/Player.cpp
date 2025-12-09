@@ -63,7 +63,7 @@ void Player::InitAnimation(void)
 	anim_->Add((int)STATE::RUN, 30.0f, "Data/Model/Player/Jaz/jazWalk.mv1");
 	anim_->Add((int)STATE::FAST_RUN, 30.0f, "Data/Model/Player/Jaz/FastRun.mv1");
 	anim_->Add((int)STATE::JUMP, 60.0f, "Data/Model/Player/Jaz/jazJump.mv1");
-
+	anim_->Add((int)STATE::DANCE, 60.0f, "Data/Model/Player/Jaz/Dance.mv1");
 
 	anim_->Play((int)STATE::IDLE);
 
@@ -124,7 +124,7 @@ void Player::ProcessMove(void)
 		moveDir_ = Quaternion::PosAxis(cameraRot, dir);
 
 
-	/*	if (CheckHitKey(KEY_INPUT_LSHIFT) 
+		if (CheckHitKey(KEY_INPUT_LSHIFT) 
 			|| ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1).ButtonsNew[4])
 		{
 			movePow_ = VScale(moveDir_, SPEED_DASH);
@@ -133,7 +133,7 @@ void Player::ProcessMove(void)
 				anim_->Play((int)STATE::FAST_RUN);
 			}
 		}
-		else*/
+		else
 		{
 			movePow_ = VScale(moveDir_, SPEED_MOVE);
 			if (!isJump_)
@@ -195,6 +195,7 @@ void Player::ProcessJump(void)
 
 		anim_->Play(static_cast<int>(STATE::JUMP), false);
 	}
+	
 }
 
 
@@ -205,9 +206,6 @@ void Player::UpdateProcess(void)
 	ProcessMove();
 	// ƒWƒƒƒ“ƒvˆ—
 	ProcessJump();
-
-
-
 
 }
 

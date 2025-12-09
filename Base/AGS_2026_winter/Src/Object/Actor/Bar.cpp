@@ -114,5 +114,5 @@ void Bar::UpdateFinal(void)
 	const float rotSpeed = AsoUtility::Deg2RadF(30.0f);
 	speed_ -= rotSpeed;
 
-	if (time_ > 1500) { timeState_ = TIME_STATE::START; time_ = 0;}
+	if (time_ > 500) { timeState_ = TIME_STATE::START; time_ = 0;}
 }

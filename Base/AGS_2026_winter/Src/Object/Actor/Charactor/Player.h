@@ -13,6 +13,7 @@ public:
 		RUN,
 		FAST_RUN,
 		JUMP,
+		DANCE,
 		MAX
 	};
 
