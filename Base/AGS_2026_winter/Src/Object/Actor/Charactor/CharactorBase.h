@@ -10,10 +10,6 @@ public:
 	static constexpr int CNT_TRY_COLLISION = 20;
 	// Õ“Ë‚Ì‰Ÿ‚µ–ß‚µ—Ê
 	static constexpr float COLLISION_BACK_DIS = 1.0f;
-	//d—Í
-	static constexpr float GRAVITY_POW = 0.8f;
-	// Å‘å—‰º‘¬“x
-	static constexpr float MAX_FALL_SPEED = -30.0f;
 
 
 	// Õ“Ë”»’èí•Ê

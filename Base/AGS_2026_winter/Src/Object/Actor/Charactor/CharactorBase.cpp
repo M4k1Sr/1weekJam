@@ -103,6 +103,7 @@ void CharactorBase::CollisionCapsule(void)
 	}
 }
 
+
 void CharactorBase::DelayRotate(void)
 {
 	// 移動方向から回転に変換する
@@ -116,20 +117,11 @@ void CharactorBase::CalcGravityPow(void)
 {
 	// 重力方向
 	VECTOR dirGravity = AsoUtility::DIR_D;
-
 	// 重力の強さ
-	float gravityPow = Application::GetInstance().GetGravityPow() * scnMng_.GetDeltaTime();
-
+	float gravityPow = Application::GetInstance().GetGravityPow()/* * scnMng_.GetDeltaTime()*/;
 	// 重力
 	VECTOR gravity = VScale(dirGravity, gravityPow);
-
 	jumpPow_ = VAdd(jumpPow_, gravity);
-
-	// 重力速度の制限
-	if (jumpPow_.y < MAX_FALL_SPEED)
-	{
-		jumpPow_.y = MAX_FALL_SPEED;
-	}
 
 }
 
@@ -159,7 +151,7 @@ void CharactorBase::CollisionGravity(void)
 
 
 	if (colliderLine_ == nullptr) return;
-
+	
 	// 線分の始点と終点を取得
 	VECTOR s = colliderLine_->GetPosStart();
 	VECTOR e = colliderLine_->GetPosEnd();
@@ -181,7 +173,7 @@ void CharactorBase::CollisionGravity(void)
 			colliderModel->GetFollow()->modelId, -1, s, e);
 
 		//除外フレームに追加
-
+		
 
 		if (hit.HitFlag > 0)
 		{
@@ -198,6 +190,5 @@ void CharactorBase::CollisionGravity(void)
 			isJump_ = false;
 		}
 	}
-
 }
 
