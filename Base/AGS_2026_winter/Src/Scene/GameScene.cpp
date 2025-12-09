@@ -8,6 +8,7 @@
 #include "../Object/Actor/Charactor/Player.h"
 #include "../Object/Actor/Bar.h"
 #include "../Object/Actor/BarUp.h"
+#include "../Sound/AudioManager.h"
 
 GameScene::GameScene(void)
 {
@@ -42,6 +43,10 @@ void GameScene::Init(void)
 
 	sceMng_.GetCamera()->ChangeMode(Camera::MODE::FOLLOW);
 	sceMng_.GetCamera()->SetFollow(&player_->GetTransform());
+
+	AudioManager::GetInstance()->LoadSceneSound(LoadScene::GAME);
+	AudioManager::GetInstance()->PlayBGM(SoundID::BGM_GAME);
+	AudioManager::GetInstance()->SetBgmVolume(150);
 }
 
 void GameScene::Update(void)

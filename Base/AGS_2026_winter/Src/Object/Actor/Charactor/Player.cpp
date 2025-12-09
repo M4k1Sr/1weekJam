@@ -9,6 +9,9 @@
 #include "../../Collider/ColliderBase.h"
 #include "../../Collider/ColliderCapsule.h"
 #include "../../../Manager/Camera.h"
+#include"../../../Sound/AudioManager.h"
+
+
 
 Player::Player(void)
 {
@@ -23,6 +26,10 @@ void Player::InitLoad(void)
 {
 	transform_.SetModel(resMng_.LoadModelDuplicate(
 		ResourceManager::SRC::PLAYER));
+
+
+	AudioManager::GetInstance()->LoadSceneSound(LoadScene::GAME);
+
 
 	
 }
@@ -193,6 +200,8 @@ void Player::ProcessJump(void)
 		isJump_ = true;
 		stepJump_ = 0.0f;
 
+		AudioManager::GetInstance()->SetBgmVolume(150);
+		AudioManager::GetInstance()->PlaySE(SoundID::SE_JUMP);
 		anim_->Play(static_cast<int>(STATE::JUMP), false);
 	}
 	

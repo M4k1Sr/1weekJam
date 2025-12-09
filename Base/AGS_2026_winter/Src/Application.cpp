@@ -5,12 +5,16 @@
 #include "Manager/SceneManager.h"
 #include "Application.h"
 #include "Common/FpsController.h"
+#include "Sound/AudioManager.h"
 
 Application* Application::instance_ = nullptr;
 
 const std::string Application::PATH_IMAGE = "Data/Image/";
 const std::string Application::PATH_MODEL = "Data/Model/";
 const std::string Application::PATH_EFFECT = "Data/Effect/";
+const std::string Application::PATH_SOUND_BGM = "Data/Sound/BGM/";
+const std::string Application::PATH_SOUND_SE = "Data/Sound/SE/";
+
 
 void Application::CreateInstance(void)
 {
@@ -71,6 +75,10 @@ void Application::Init(void)
 	// シーン管理初期化
 	SceneManager::CreateInstance();
 
+	//サウンド管理初期化
+	AudioManager::CreateInstance();
+	AudioManager::GetInstance()->Init();
+
 }
 
 void Application::Run(void)
@@ -114,6 +122,10 @@ void Application::Destroy(void)
 
 	// シーン管理解放
 	SceneManager::GetInstance().Destroy();
+
+	// サウンド管理削除
+	AudioManager::GetInstance()->DeleteAll();
+	AudioManager::DeleteInstance();
 
 	// Effekseerを終了する。
 	Effkseer_End();
