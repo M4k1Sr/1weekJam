@@ -93,3 +93,20 @@ VECTOR Transform::GetDir(const VECTOR& dir) const
 {
 	return quaRot.PosAxis(dir);
 }
+
+MATRIX Transform::GetWorldMatrix() const
+{
+	MATRIX mat = MGetIdent();
+
+	// スケール
+	mat = MMult(mat, MGetScale(scl));
+
+	// 回転（quaRot と quaRotLocal の合成）
+	Quaternion q = quaRot.Mult(quaRotLocal);
+	mat = MMult(mat, q.ToMatrix());
+
+	// 平行移動
+	mat = MMult(mat, MGetTranslate(pos));
+
+	return mat;
+}

@@ -49,6 +49,8 @@ protected:
 	bool isJump_;
 	//ジャンプの入力受付時間
 	float stepJump_;
+	//押し戻し
+	VECTOR velocity_;
 
 
 	// 更新系

@@ -11,13 +11,23 @@ Bar::Bar(void)
 
 void Bar::Update(void)
 {
-	const float rotSpeed = AsoUtility::Deg2RadF(65.5f);
+	const float rotSpeed = AsoUtility::Deg2RadF(95.5f);
 	speed_ -= rotSpeed;
 
-	transform_.quaRotLocal = Quaternion::Mult(transform_.quaRot,
-		Quaternion::Euler(0, AsoUtility::Deg2RadF(speed_), AsoUtility::Deg2RadF(0)));
+	transform_.quaRotLocal = Quaternion::Mult(
+		transform_.quaRot,
+		Quaternion::Euler(0, AsoUtility::Deg2RadF(speed_), 0));
+
 	transform_.Update();
+
+	// ★★★ ここでコライダーを更新する（超重要） ★★★
+	for (auto& col : ownColliders_)
+	{
+		col.second->Update();   // ColliderModel なら内部で MV1RefreshCollInfo などを行う
+	}
 }
+
+
 
 void Bar::Release(void)
 {
@@ -36,7 +46,7 @@ void Bar::InitTransform(void)
 	transform_.quaRot = Quaternion::Identity();
 	transform_.quaRotLocal = Quaternion::Identity();
 
-	transform_.pos = { 0.0f,0.0f,0.0f };
+	transform_.pos = { 0.0f,-80.0f,0.0f };
 
 	transform_.Update();
 

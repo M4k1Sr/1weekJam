@@ -10,6 +10,7 @@ public:
 	// デストラクタ
 	~ColliderModel(void) override;
 
+	void Update() override;
 	//指定された文字を含むフレームを衝突判定から除外
 	void AddExcludeFrameIds(const std::string& name);
 

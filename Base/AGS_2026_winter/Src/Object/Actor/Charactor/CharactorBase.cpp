@@ -78,10 +78,22 @@ void CharactorBase::CollisionCapsule(void)
 
 				if (pHit)
 				{
-					transform_.pos =
-						VAdd(transform_.pos,
-							VScale(hit.Normal, COLLISION_BACK_DIS));
+					// 衝突法線に Y を足して斜め上方向に
+					VECTOR pushDir = hit.Normal;
+					pushDir.y += 1.0f;   // 1.0 くらいで十分
+					pushDir = VNorm(pushDir);
+
+					// 位置の押し戻しは少しだけ
+					transform_.pos = VAdd(transform_.pos,
+						VScale(pushDir, COLLISION_BACK_DIS * 2.0f));
+
+					// 速度に吹っ飛びを加える
+					const float PUSH_FORCE = 150.0f; // 大きすぎない
+					velocity_ = VAdd(velocity_, VScale(pushDir, PUSH_FORCE));
+
+
 					continue;
+
 				}
 				break;
 			}
@@ -135,7 +147,6 @@ void CharactorBase::Collision(void)
 
 void CharactorBase::CollisionGravity(void)
 {
-
 	// 線分コライダ
 	int lineType = static_cast<int>(COLLIDER_TYPE::LINE);
 
@@ -146,12 +157,16 @@ void CharactorBase::CollisionGravity(void)
 	ColliderLine* colliderLine_ =
 		dynamic_cast<ColliderLine*>(ownColliders_.at(lineType).get());
 
+
 	if (colliderLine_ == nullptr) return;
+
+	// 線分の始点と終点を取得
+	VECTOR s = colliderLine_->GetPosStart();
+	VECTOR e = colliderLine_->GetPosEnd();
 
 	// 登録されている衝突物を全てチェック
 	for (const auto& hitCol : hitColliders_)
 	{
-
 		// ステージ以外は処理を飛ばす
 		if (hitCol->GetTag() != ColliderBase::TAG::STAGE) continue;
 
@@ -161,27 +176,28 @@ void CharactorBase::CollisionGravity(void)
 
 		if (colliderModel == nullptr) continue;
 
-		// 衝突したポリゴンの上に押し戻す
-		bool isHit = colliderLine_->PushBackUp(
-			colliderModel,
-			transform_,
-			2.0f,
-			true,
-			false);
+		// ステージモデル(地面)との衝突
+		auto hit = MV1CollCheck_Line(
+			colliderModel->GetFollow()->modelId, -1, s, e);
 
-		// ジャンプ判定
-		if (isHit)
+		//除外フレームに追加
+
+
+		if (hit.HitFlag > 0)
 		{
+			// 衝突地点から、少し上に移動
+			transform_.pos =
+				VAdd(hit.HitPosition, VScale(AsoUtility::DIR_U, 2.0f));
+			// ジャンプリセット
+			jumpPow_ = AsoUtility::VECTOR_ZERO;
+
+			//ジャンプの入力受付時間をリセット
+			stepJump_ = 0.0f;
+
+			// ジャンプ判定
 			isJump_ = false;
 		}
 	}
 
-	if (!isJump_)
-	{
-		// ジャンプリセット
-		jumpPow_ = AsoUtility::VECTOR_ZERO;
-		// ジャンプの入力受付時間をリセット
-		stepJump_ = 0.0f;
-	}
 }
 
