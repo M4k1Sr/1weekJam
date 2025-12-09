@@ -6,11 +6,15 @@
 
 BarUp::BarUp(void)
 {
-	speed_ = 180.0f;
+	time_ = 0;
+	TimeState(TIME_STATE::START);
+
 }
 
 void BarUp::Update(void)
 {
+	TimeState(timeState_);
+
 	const float rotSpeed = AsoUtility::Deg2RadF(-65.5f);
 	speed_ -= rotSpeed;
 
@@ -24,10 +28,29 @@ void BarUp::Update(void)
 		col.second->Update();   // ColliderModel ‚È‚ç“à•”‚Å MV1RefreshCollInfo ‚È‚Ç‚ðs‚¤
 	}
 
+	time_++;
+
 }
 
 void BarUp::Release(void)
 {
+}
+
+void BarUp::TimeState(TIME_STATE timeState)
+{
+	timeState_ = timeState;
+	switch (timeState_)
+	{
+	case BarUp::TIME_STATE::START:
+		UpdateStart();
+		break;
+	case BarUp::TIME_STATE::HALF:
+		UpdateHalf();
+		break;
+	case BarUp::TIME_STATE::FINAL:
+		UpdateFinal();
+		break;
+	}
 }
 
 void BarUp::InitLoad(void)
@@ -66,4 +89,29 @@ void BarUp::InitAnimation(void)
 
 void BarUp::InitPost(void)
 {
+}
+
+void BarUp::UpdateStart(void)
+{
+	const float rotSpeed = AsoUtility::Deg2RadF(50.0f);
+	speed_ -= rotSpeed;
+
+	if (time_ > 1000) { timeState_ = TIME_STATE::HALF; time_ = 0; }
+}
+
+void BarUp::UpdateHalf(void)
+{
+	const float rotSpeed = AsoUtility::Deg2RadF(200.0f);
+	speed_ += rotSpeed;
+
+	if (time_ > 900) { timeState_ = TIME_STATE::FINAL; time_ = 0; }
+
+}
+
+void BarUp::UpdateFinal(void)
+{
+	const float rotSpeed = AsoUtility::Deg2RadF(30.0f);
+	speed_ -= rotSpeed;
+
+	if (time_ > 1500) { timeState_ = TIME_STATE::START; time_ = 0; }
 }

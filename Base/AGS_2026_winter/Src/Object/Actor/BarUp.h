@@ -7,6 +7,14 @@ class BarUp : public ActorBase
 {
 public:
 
+	// 時制種別
+	enum class TIME_STATE
+	{
+		START,
+		HALF,
+		FINAL,
+	};
+
 	// 衝突判定種別
 	enum class COLLIDER_TYPE
 	{
@@ -17,6 +25,8 @@ public:
 	BarUp(void);
 	void Update(void)override;
 	void Release(void)override;
+
+	void TimeState(TIME_STATE timeState);
 
 private:
 
@@ -35,7 +45,15 @@ private:
 	// 初期化後の個別処理
 	void InitPost(void)override;
 
+	TIME_STATE timeState_;
+
 	float speed_; //回転スぴード
+
+	int time_;// 経過カウンタ
+
+	void UpdateStart(void);
+	void UpdateHalf(void);
+	void UpdateFinal(void);
 
 };
 
