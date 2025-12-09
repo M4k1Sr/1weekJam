@@ -124,16 +124,16 @@ void Player::ProcessMove(void)
 		moveDir_ = Quaternion::PosAxis(cameraRot, dir);
 
 
-		if (CheckHitKey(KEY_INPUT_LSHIFT) 
-			|| ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1).ButtonsNew[4])
-		{
-			movePow_ = VScale(moveDir_, SPEED_DASH);
-			if (!isJump_)
-			{
-				anim_->Play((int)STATE::FAST_RUN);
-			}
-		}
-		else
+		//if (CheckHitKey(KEY_INPUT_LSHIFT) 
+		//	|| ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1).ButtonsNew[4])
+		//{
+		//	movePow_ = VScale(moveDir_, SPEED_DASH);
+		//	if (!isJump_)
+		//	{
+		//		anim_->Play((int)STATE::FAST_RUN);
+		//	}
+		//}
+		//else
 		{
 			movePow_ = VScale(moveDir_, SPEED_MOVE);
 			if (!isJump_)
