@@ -30,7 +30,7 @@ void Application::Init(void)
 {
 
 	// アプリケーションの初期設定
-	SetWindowText("2416083_柳伊吹");
+	SetWindowText("OCHINNA");
 
 	// ウィンドウサイズ
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 32);
