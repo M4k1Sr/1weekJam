@@ -73,4 +73,6 @@ public:
 	// ‘ÎÛ•ûŒü‚ğæ“¾
 	VECTOR GetDir(const VECTOR& dir) const;
 
+	MATRIX GetWorldMatrix() const;
+
 };

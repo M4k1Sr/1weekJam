@@ -24,6 +24,9 @@ private:
 	Camera* camera_;
 	Grid* grid_;
 	ActorBase* stage_;
+	ActorBase* player_;
+	ActorBase* bar_;
+	ActorBase* barUp_;
 
 };
 
