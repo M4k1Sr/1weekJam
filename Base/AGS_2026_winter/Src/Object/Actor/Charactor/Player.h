@@ -1,7 +1,7 @@
 #pragma once
 #include "CharactorBase.h"
 #include "../../../framework.h"
-
+class Timer;
 
 class Player : public CharactorBase
 {
@@ -26,6 +26,7 @@ protected:
 
 private:
 	
+	Timer* gameTimer_;
 
 	//VECTOR movePow_; //ˆÚ“®—Í
 

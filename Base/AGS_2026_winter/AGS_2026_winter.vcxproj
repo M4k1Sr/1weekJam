@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Object\Actor\BarUp.cpp" />
     <ClCompile Include="Src\Object\Actor\Bar.cpp" />
     <ClCompile Include="Src\Common\FpsController.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Src\Object\Common\AnimationController.cpp" />
     <ClCompile Include="Src\Object\Common\Transform.cpp" />
     <ClCompile Include="Src\Object\Grid.cpp" />
+    <ClCompile Include="Src\Scene\GameClear.cpp" />
     <ClCompile Include="Src\Scene\GameScene.cpp" />
     <ClCompile Include="Src\Application.cpp" />
     <ClCompile Include="Src\Common\Fader.cpp" />
@@ -177,6 +179,7 @@
     <ClCompile Include="Src\Utility\MatrixUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Object\Actor\BarUp.h" />
     <ClInclude Include="Src\Object\Actor\Bar.h" />
     <ClInclude Include="Src\Common\FpsController.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="Src\Object\Common\AnimationController.h" />
     <ClInclude Include="Src\Object\Common\Transform.h" />
     <ClInclude Include="Src\Object\Grid.h" />
+    <ClInclude Include="Src\Scene\GameClear.h" />
     <ClInclude Include="Src\Scene\GameScene.h" />
     <ClInclude Include="Src\Application.h" />
     <ClInclude Include="Src\Common\Fader.h" />
