@@ -2,6 +2,7 @@
 #include "../Manager/SceneManager.h"
 #include "../Manager/InputManager.h"
 #include "../Application.h"
+#include "../Sound/AudioManager.h"
 #include <DxLib.h>
 
 TitleScene::TitleScene(void)
@@ -17,6 +18,10 @@ void TitleScene::Init(void)
 	titleImg_ = LoadGraph((Application::PATH_IMAGE + "Title2.png").c_str());
 	backImg_ = LoadGraph((Application::PATH_IMAGE + "BackGraund2.png").c_str());
 	pushImg_ = LoadGraph((Application::PATH_IMAGE + "Push2.png").c_str());
+
+	AudioManager::GetInstance()->LoadSceneSound(LoadScene::TITLE);
+	AudioManager::GetInstance()->PlayBGM(SoundID::BGM_TITLE);
+	AudioManager::GetInstance()->SetBgmVolume(150);
 }
 
 void TitleScene::Update(void)
@@ -37,7 +42,7 @@ void TitleScene::Update(void)
 		InputManager::JOYPAD_IN_STATE padState =
 			ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
 
-		// どのボタンでシーン遷移するか選んで（例：STARTボタン）		
+		// どのボタンでシーン遷移するか選んで（例：STARTボタン）  
 		isSceneChangePad = ins.IsPadBtnNew(InputManager::JOYPAD_NO::PAD1,
 			InputManager::JOYPAD_BTN::DOWN);  // Aボタン（DOWN）
 	}
@@ -45,10 +50,14 @@ void TitleScene::Update(void)
 	// どちらかが押されたらシーン遷移
 	if (isSceneChangeKeyboard || isSceneChangePad)
 	{
+
+		AudioManager::GetInstance()->StopBGM();
+		AudioManager::GetInstance()->SetSeVolume(150);
+		AudioManager::GetInstance()->PlaySE(SoundID::SE_TITLE_DECISION);
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME);
 	}
 
-	
+
 	count++;
 	if (count % 70 < 30)
 	{
@@ -63,13 +72,13 @@ void TitleScene::Update(void)
 void TitleScene::Draw(void)
 {
 
-	DrawGraph(0, 0,backImg_, true);
-	DrawGraph(Application::SCREEN_SIZE_X/4 - 30 ,0,titleImg_,true);
+	DrawGraph(0, 0, backImg_, true);
+	DrawGraph(Application::SCREEN_SIZE_X / 4 - 30, 0, titleImg_, true);
 	if (pushAlive_)
 	{
 		DrawGraph(Application::SCREEN_SIZE_X / 3 + 70, Application::SCREEN_SIZE_Y / 2 + 50, pushImg_, true);
 	}
-	
+
 }
 
 void TitleScene::Release(void)
