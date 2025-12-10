@@ -72,6 +72,7 @@ void Player::InitAnimation(void)
 void Player::InitPost(void)
 {
 	transform_.Update();
+	isDead_ = false;
 }
 
 void Player::ProcessMove(void)
@@ -207,6 +208,14 @@ void Player::UpdateProcess(void)
 	// ƒWƒƒƒ“ƒvˆ—
 	ProcessJump();
 
+	if (transform_.pos.y < -3000.0f)
+	{
+		SetDead(true);
+	}
+	else
+	{
+		SetDead(false);
+	}
 }
 
 void Player::UpdateProcessPost(void)

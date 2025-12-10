@@ -2,6 +2,7 @@
 #include <DxLib.h>
 #include <EffekseerForDXLib.h>
 #include "../Common/Fader.h"
+#include "../Scene/TitleScene.h"
 #include "../Scene/GameScene.h"
 #include "Camera.h"
 #include "ResourceManager.h"
