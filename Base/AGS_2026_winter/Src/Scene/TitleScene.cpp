@@ -21,10 +21,29 @@ void TitleScene::Init(void)
 
 void TitleScene::Update(void)
 {
-	//シーン遷移
-	InputManager& ins = InputManager::GetInstance();
+	auto& ins = InputManager::GetInstance();
 
-	if (ins.IsTrgDown(KEY_INPUT_SPACE))
+	// シーン遷移の入力判定
+	bool isSceneChangeInput = false;
+
+	// キーボード操作
+	bool isSceneChangeKeyboard = ins.IsTrgDown(KEY_INPUT_SPACE);
+
+	// ゲームパッド操作
+	bool isSceneChangePad = false;
+	if (GetJoypadNum() > 0)
+	{
+		// 接続されているゲームパッド１の情報を取得
+		InputManager::JOYPAD_IN_STATE padState =
+			ins.GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
+
+		// どのボタンでシーン遷移するか選んで（例：STARTボタン）		
+		isSceneChangePad = ins.IsPadBtnNew(InputManager::JOYPAD_NO::PAD1,
+			InputManager::JOYPAD_BTN::DOWN);  // Aボタン（DOWN）
+	}
+
+	// どちらかが押されたらシーン遷移
+	if (isSceneChangeKeyboard || isSceneChangePad)
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME);
 	}
@@ -50,8 +69,6 @@ void TitleScene::Draw(void)
 	{
 		DrawGraph(Application::SCREEN_SIZE_X / 3 + 70, Application::SCREEN_SIZE_Y / 2 + 50, pushImg_, true);
 	}
-	
-
 	
 }
 
