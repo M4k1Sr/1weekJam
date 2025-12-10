@@ -16,6 +16,7 @@
 Player::Player(void)
 {
 	movePow_ = AsoUtility::VECTOR_ZERO;
+	
 }
 
 Player::~Player(void)
@@ -26,10 +27,6 @@ void Player::InitLoad(void)
 {
 	transform_.SetModel(resMng_.LoadModelDuplicate(
 		ResourceManager::SRC::PLAYER));
-
-
-	AudioManager::GetInstance()->LoadSceneSound(LoadScene::GAME);
-
 
 	
 }
@@ -200,7 +197,7 @@ void Player::ProcessJump(void)
 		isJump_ = true;
 		stepJump_ = 0.0f;
 
-		AudioManager::GetInstance()->SetBgmVolume(150);
+		AudioManager::GetInstance()->SetSeVolume(200);
 		AudioManager::GetInstance()->PlaySE(SoundID::SE_JUMP);
 		anim_->Play(static_cast<int>(STATE::JUMP), false);
 	}

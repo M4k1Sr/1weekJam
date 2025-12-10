@@ -9,6 +9,7 @@
 #include "../Object/Actor/Bar.h"
 #include "../Object/Actor/BarUp.h"
 #include "../Sound/AudioManager.h"
+#include "../Manager/InputManager.h"
 
 GameScene::GameScene(void)
 {
@@ -54,6 +55,7 @@ void GameScene::Update(void)
 	player_->Update();
 	bar_->Update();
 	barUp_->Update();
+
 }
 
 void GameScene::Draw(void)
