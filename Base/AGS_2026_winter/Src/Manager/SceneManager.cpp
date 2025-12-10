@@ -246,10 +246,10 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 		scene_ = new GameScene();
 		break;
 	case SCENE_ID::GAMEOVER:
-		scene_ = new GameClear();
+		scene_ = new GameOver();
 		break;
 	case SCENE_ID::GAMECLEAR:
-		scene_ = new GameOver();
+		scene_ = new GameClear();
 		break;
 	}
 

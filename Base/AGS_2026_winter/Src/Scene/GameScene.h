@@ -9,7 +9,7 @@ class GameScene : public SceneBase
 public:
 
 	// タイムリミット
-	const float LIMIT_TIME = 31.0f;
+	const float LIMIT_TIME = 1.0f;
 
 	// コンストラクタ
 	GameScene(void);

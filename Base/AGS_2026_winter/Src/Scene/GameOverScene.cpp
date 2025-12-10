@@ -14,7 +14,7 @@ GameOver::~GameOver(void)
 
 void GameOver::Init(void)
 {
-	imgGameOver_ = LoadGraph((Application::PATH_IMAGE + "Gameover.png").c_str());
+	imgGameOverScene_ = LoadGraph((Application::PATH_IMAGE + "YouLose.png").c_str());
 
 }
 
@@ -51,10 +51,10 @@ void GameOver::Update(void)
 
 void GameOver::Draw(void)
 {
-	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2, 1.0f, 0.0f, imgGameOver_, true);
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2, 1.0f, 0.0f, imgGameOverScene_, true);
 }
 
 void GameOver::Release(void)
 {
-	DeleteGraph(imgGameOver_);
+	DeleteGraph(imgGameOverScene_);
 }

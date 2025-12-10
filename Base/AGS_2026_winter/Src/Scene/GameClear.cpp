@@ -15,7 +15,7 @@ GameClear::~GameClear(void)
 
 void GameClear::Init(void)
 {
-	imgGameClear_ = LoadGraph((Application::PATH_IMAGE + "GameClear.png").c_str());
+	imgGameClear_ = LoadGraph((Application::PATH_IMAGE + "YouWin.png").c_str());
 	imgBack_ = LoadGraph((Application::PATH_IMAGE + "WinBack.png").c_str());
 
 
@@ -60,7 +60,7 @@ void GameClear::Draw(void)
 {
 	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2, 1.0f, 0.0f, imgBack_, true);
 
-	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, 150, 3.0f, 0.0f, imgGameClear_, true);
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2, 1.0f, 0.0f, imgGameClear_, true);
 
 }
 
