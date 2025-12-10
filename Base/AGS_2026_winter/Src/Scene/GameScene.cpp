@@ -49,6 +49,15 @@ void GameScene::Update(void)
 	player_->Update();
 	bar_->Update();
 	barUp_->Update();
+
+	//エネミーHP0になったらゲームクリアシーン遷移
+	if (player_->GetDead())
+	{
+		//ゲームオーバーシーンに遷移する
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMEOVER);
+		//DxLib_End();
+		//exit(0);  // ゲームを完全に終了する
+	}
 }
 
 void GameScene::Draw(void)

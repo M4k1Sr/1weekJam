@@ -94,3 +94,13 @@ void ActorBase::ClearHitCollider(void)
 	hitColliders_.clear();
 }
 
+bool ActorBase::GetDead(void) const
+{
+	return isDead_;
+}
+
+void ActorBase::SetDead(bool isDie)
+{
+	isDead_ = isDie;
+}
+

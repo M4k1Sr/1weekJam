@@ -46,6 +46,11 @@ public:
 	// 衝突対象となるコライダをクリア
 	void ClearHitCollider(void);
 
+	// 落下判定取得
+	bool GetDead(void) const;
+
+	// 落下判定
+	void SetDead(bool isDie);
 
 protected:
 
@@ -81,5 +86,8 @@ protected:
 
 	// 初期化後の個別処理
 	virtual void InitPost(void) = 0;
+
+	// 落下判定
+	bool isDead_;
 
 };

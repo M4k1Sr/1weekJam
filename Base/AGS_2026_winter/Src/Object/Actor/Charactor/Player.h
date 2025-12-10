@@ -98,6 +98,5 @@ private:
 	void CollisionReserve(void) override;
 
 
-
 };
 
