@@ -8,6 +8,8 @@
 #include "../Object/Actor/Charactor/Player.h"
 #include "../Object/Actor/Bar.h"
 #include "../Object/Actor/BarUp.h"
+#include "../Sound/AudioManager.h"
+#include "../Manager/InputManager.h"
 
 GameScene::GameScene(void)
 	: timeLimit_(LIMIT_TIME)
@@ -46,7 +48,13 @@ void GameScene::Init(void)
 	sceMng_.GetCamera()->ChangeMode(Camera::MODE::FOLLOW);
 	sceMng_.GetCamera()->SetFollow(&player_->GetTransform());
 
+<<<<<<< HEAD
 	StartMission(LIMIT_TIME);
+=======
+	AudioManager::GetInstance()->LoadSceneSound(LoadScene::GAME);
+	AudioManager::GetInstance()->PlayBGM(SoundID::BGM_GAME);
+	AudioManager::GetInstance()->SetBgmVolume(150);
+>>>>>>> andou
 }
 
 void GameScene::Update()
@@ -66,6 +74,7 @@ void GameScene::Update()
 	bar_->Update();
 	barUp_->Update();
 
+<<<<<<< HEAD
 	//エネミーHP0になったらゲームクリアシーン遷移
 	if (player_->GetDead())
 	{
@@ -80,6 +89,8 @@ void GameScene::Update()
 		//ゲームクリアシーンに遷移する
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR);
 	}
+=======
+>>>>>>> andou
 }
 
 void GameScene::Draw(void)

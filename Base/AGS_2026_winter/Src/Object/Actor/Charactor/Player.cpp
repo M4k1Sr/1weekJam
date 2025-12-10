@@ -9,10 +9,14 @@
 #include "../../Collider/ColliderBase.h"
 #include "../../Collider/ColliderCapsule.h"
 #include "../../../Manager/Camera.h"
+#include"../../../Sound/AudioManager.h"
+
+
 
 Player::Player(void)
 {
 	movePow_ = AsoUtility::VECTOR_ZERO;
+	
 }
 
 Player::~Player(void)
@@ -193,6 +197,8 @@ void Player::ProcessJump(void)
 		isJump_ = true;
 		stepJump_ = 0.0f;
 
+		AudioManager::GetInstance()->SetSeVolume(200);
+		AudioManager::GetInstance()->PlaySE(SoundID::SE_JUMP);
 		anim_->Play(static_cast<int>(STATE::JUMP), false);
 	}
 	
