@@ -10,6 +10,9 @@
 #include "../Object/Actor/BarUp.h"
 
 GameScene::GameScene(void)
+	: timeLimit_(LIMIT_TIME)
+	, elapsedTime_(0.0f)
+	, isTimeLimitActive_(false)
 {
 }
 
@@ -42,10 +45,23 @@ void GameScene::Init(void)
 
 	sceMng_.GetCamera()->ChangeMode(Camera::MODE::FOLLOW);
 	sceMng_.GetCamera()->SetFollow(&player_->GetTransform());
+
+	StartMission(LIMIT_TIME);
 }
 
-void GameScene::Update(void)
+void GameScene::Update()
 {
+	// タイムリミット更新
+	if (isTimeLimitActive_)
+	{
+		elapsedTime_ += SceneManager::GetInstance().GetDeltaTime();
+
+		if (elapsedTime_ >= timeLimit_)
+		{
+			OnTimeUp();
+		}
+	}
+
 	player_->Update();
 	bar_->Update();
 	barUp_->Update();
@@ -58,11 +74,28 @@ void GameScene::Update(void)
 		//DxLib_End();
 		//exit(0);  // ゲームを完全に終了する
 	}
+
+	if (elapsedTime_ > LIMIT_TIME)
+	{
+		//ゲームクリアシーンに遷移する
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAMECLEAR);
+	}
 }
 
 void GameScene::Draw(void)
 {
-	grid_->Draw();
+
+	if (isTimeLimitActive_)
+	{
+		float remaining = GetRemainingTime();
+		int min = static_cast<int>(remaining) / 60;
+		int sec = static_cast<int>(remaining) % 60;
+
+		// 残り時間表示
+		DrawFormatString(10, 10, GetColor(255, 255, 255),
+			"Time: %02d:%02d", min, sec);
+	}
+
 	stage_->Draw();
 	player_->Draw();
 	bar_->Draw();
@@ -73,3 +106,25 @@ void GameScene::Release(void)
 {
 	player_->Release();
 }
+
+void GameScene::StartMission(float limitSeconds)
+{
+	timeLimit_ = limitSeconds;
+	elapsedTime_ = 0.0f;
+	isTimeLimitActive_ = true;
+}
+
+float GameScene::GetRemainingTime() const
+{
+	if (!isTimeLimitActive_) return 0.0f;
+	return timeLimit_ - elapsedTime_;
+}
+
+void GameScene::OnTimeUp()
+{
+	isTimeLimitActive_ = false;
+
+	// ゲームオーバー処理
+	DrawString(400, 300, "こりゃだめじゃ!", GetColor(255, 0, 0));
+}
+

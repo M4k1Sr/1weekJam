@@ -72,7 +72,6 @@ void Player::InitAnimation(void)
 void Player::InitPost(void)
 {
 	transform_.Update();
-	isDead_ = false;
 }
 
 void Player::ProcessMove(void)

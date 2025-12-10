@@ -4,6 +4,8 @@
 #include "../Common/Fader.h"
 #include "../Scene/TitleScene.h"
 #include "../Scene/GameScene.h"
+#include "../Scene/GameClear.h"
+#include "../Scene/GameOverScene.h"
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
@@ -242,6 +244,12 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 		break;
 	case SCENE_ID::GAME:
 		scene_ = new GameScene();
+		break;
+	case SCENE_ID::GAMEOVER:
+		scene_ = new GameClear();
+		break;
+	case SCENE_ID::GAMECLEAR:
+		scene_ = new GameOver();
 		break;
 	}
 
